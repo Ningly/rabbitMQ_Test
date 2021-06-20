@@ -24,5 +24,6 @@ public class Consumer {
         },(consumerTag)->{
             System.out.println("消息消费被中断");
         });
+
     }
 }
