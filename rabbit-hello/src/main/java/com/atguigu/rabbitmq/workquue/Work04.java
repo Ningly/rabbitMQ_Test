@@ -23,7 +23,7 @@ public class Work04 {
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         };
 
-        channel.basicQos(1);
+        channel.basicQos(5);
 //采用手动应答
         boolean autoAck = false;
         channel.basicConsume(ACK_QUEUE_NAME, autoAck, deliverCallback, (consumerTag) -> {
