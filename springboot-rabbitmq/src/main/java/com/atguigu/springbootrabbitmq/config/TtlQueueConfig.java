@@ -13,6 +13,7 @@ public class TtlQueueConfig {
     public static final String X_EXCHANGE = "X";
     public static final String QUEUE_A = "QA";
     public static final String QUEUE_B = "QB";
+    public static final String QUEUE_C = "QC";
     public static final String Y_DEAD_LETTER_EXCHANGE = "Y";
     public static final String DEAD_LETTER_QUEUE = "QD";
 
@@ -53,29 +54,78 @@ public class TtlQueueConfig {
         return QueueBuilder.durable(QUEUE_B).withArguments(args).build();
     }
 
+    //声明死信队列 QD
+    @Bean("queueD")
+    public Queue queueD() {
+        Map<String, Object> args = new HashMap<>(2);
+//声明当前队列绑定的死信交换机
+        args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+//声明当前队列的死信路由 key
+        args.put("x-dead-letter-routing-key", "YD");
+        return QueueBuilder.durable(DEAD_LETTER_QUEUE).withArguments(args).build();
+    }
+
 
     // 声明队列 A 绑定 X 交换机
     @Bean
-    public Binding queueaBindingX(@Qualifier("queueA") Queue queueA,@Qualifier("xExchange") DirectExchange xExchange)
-    {
+    public Binding queueaBindingX(@Qualifier("queueA") Queue queueA, @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queueA).to(xExchange).with("XA");
     }
 
     //声明队列 B 绑定 X 交换机
     @Bean
-    public Binding queuebBindingX(@Qualifier("queueB") Queue queue1B,@Qualifier("xExchange") DirectExchange xExchange)
-    {
+    public Binding queuebBindingX(@Qualifier("queueB") Queue queue1B, @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queue1B).to(xExchange).with("XB");
     }
 
-    //声明死信队列 QD
-    @Bean("queueD")
-    public Queue queueD(){
-        return new Queue(DEAD_LETTER_QUEUE);
-    }
     //声明死信队列 QD 绑定关系
     @Bean
-    public Binding deadLetterBindingQAD(@Qualifier("queueD") Queue queueD, @Qualifier("yExchange") DirectExchange yExchange){
+    public Binding deadLetterBindingQAD(@Qualifier("queueD") Queue queueD, @Qualifier("yExchange") DirectExchange yExchange) {
         return BindingBuilder.bind(queueD).to(yExchange).with("YD");
     }
+
+
+    // 声明队列 c 绑定 X 交换机
+    @Bean
+    public Binding queuecBindingX(@Qualifier("queueC") Queue queueC, @Qualifier("xExchange") DirectExchange xExchange) {
+        return BindingBuilder.bind(queueC).to(xExchange).with("XC");
+    }
+
+    //声明队列 B ttl 为 40s 并绑定到对应的死信交换机
+    @Bean("queueC")
+    public Queue queueC() {
+        Map<String, Object> args = new HashMap<>(2);
+//声明当前队列绑定的死信交换机
+        args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+//声明当前队列的死信路由 key
+        args.put("x-dead-letter-routing-key", "YD");
+        return QueueBuilder.durable(QUEUE_C).withArguments(args).build();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
