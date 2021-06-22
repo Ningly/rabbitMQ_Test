@@ -1,4 +1,4 @@
-package com.atguigu.rabbitmq.springbootrabbitmq.config;
+package com.atguigu.springbootrabbitmq.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,6 @@ public class SwaggerConfig {
                 .title("rabbitmq 接口文档")
                 .description("本文档描述了 rabbitmq 微服务接口定义")
                 .version("1.0")
-                .contact(new Contact("enjoy6288", "", "1551388580@qq.com")).build();
+                .contact(new Contact("enjoy6288", "http://atguigu.com", "1551388580@qq.com")).build();
     }
 }
