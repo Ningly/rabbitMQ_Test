@@ -6,7 +6,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
 
 public class Worker01 {
-    private static final String QUEUE_NAME="hello";
+    private static final String QUEUE_NAME="hello_priority";  //hello
     public static void main(String[] args) throws Exception {
         Channel channel = RabbitMqUtils.getChannel();
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
